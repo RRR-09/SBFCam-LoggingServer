@@ -38,7 +38,7 @@ async def format_data(data: List) -> BufferedData:
 
         formatted_temporal_data = []
         for player_data in temporal_data:
-            assert len(player_data) == 13
+            assert len(player_data) == 16
 
             player_id = player_data[0]
             player_id = int(player_id)
@@ -61,14 +61,18 @@ async def format_data(data: List) -> BufferedData:
             size["y"] = float(size["y"])
             size["z"] = float(size["z"])
 
-            velocity = {"x": player_data[8], "y": player_data[9], "z": player_data[10]}
+            velocity = {
+                "x": player_data[11],
+                "y": player_data[12],
+                "z": player_data[13],
+            }
             velocity["x"] = float(velocity["x"])
             velocity["y"] = float(velocity["y"])
             velocity["z"] = float(velocity["z"])
 
-            scaleType = player_data[11]
+            scaleType = player_data[14]
             scaleType = str(scaleType)
-            characterType = player_data[12]
+            characterType = player_data[15]
             characterType = str(characterType)
 
             formatted_temporal_data.append(
