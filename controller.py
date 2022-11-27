@@ -104,4 +104,4 @@ async def handle_data(data: List):
         print(f"Could not format data:\n{e}\n{data}\n{traceback.format_exc()}")
         return
 
-    print(json.loads(formatted_data.json(), indent=2))
+    print(json.dumps(formatted_data.json(), indent=2))
