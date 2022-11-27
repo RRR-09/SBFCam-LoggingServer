@@ -94,7 +94,7 @@ async def handle_data(data: List):
     try:
         formatted_data = await format_data(data)
     except Exception as e:
-        print(f"Could not format data:\n{e}")
+        print(f"Could not format data:\n{e}\n{data}")
         return
 
     print(json.loads(formatted_data.json(), indent=2))
