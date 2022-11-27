@@ -15,6 +15,8 @@ async def format_data(data: List) -> BufferedData:
     assert len(data) == 3
 
     server_id = data[0]
+    if not server_id:
+        raise ValueError("server_id is empty/null")
     server_id = uuid.UUID(str(server_id))
 
     server_version = data[1]
