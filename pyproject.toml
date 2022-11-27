@@ -2,9 +2,8 @@
 name = "sbfcam-loggingserver"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = [""]
 readme = "README.md"
-packages = [{include = "sbfcam_loggingserver"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
