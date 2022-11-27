@@ -1,9 +1,10 @@
 from json import JSONDecodeError
 from os import getenv
 
-import utils
+from controller import handle_data
 from dotenv import load_dotenv
-from fastapi import FastAPI, Header, HTTPException, Request, status
+from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, Request, status
+from utils import check_dotenv
 
 app = FastAPI(
     title="SBF - Logging Backend",
@@ -16,7 +17,7 @@ app = FastAPI(
 @app.on_event("startup")
 async def startup_event():
     load_dotenv(".env", verbose=True)
-    utils.check_dotenv()
+    check_dotenv()
     app.state.auth_key = getenv("AUTH_KEY")
 
 
@@ -27,7 +28,9 @@ async def about():
 
 @app.post("/player_data")
 async def post_player_data(
-    request: Request, x_token: str | None = Header(default=None)
+    request: Request,
+    background_tasks: BackgroundTasks,
+    x_token: str | None = Header(default=None),
 ):
     # TODO: Implement actual authentication
     if x_token != app.state.auth_key:
@@ -64,5 +67,6 @@ async def post_player_data(
             detail="Failed to decode JSON body.",
         )
 
-    print(data_json)
+    background_tasks.add_task(handle_data, data_json)
+
     return {"message": "Received"}
