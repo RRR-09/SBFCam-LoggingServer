@@ -8,6 +8,8 @@ from typing import Dict, Optional
 
 from pytz import timezone
 
+# TODO: Move all of this to either docker or some standard process manager
+
 
 def get_est_time() -> str:
     """
@@ -33,6 +35,7 @@ def launch(config: Dict):
     do_log(f"Launching {config['process_name']}")
     bash_cmd = f'cd "{config["directory"]}";{config["launch_command"]}'
     screen_cmd = f'screen -A -m -d -S {config["process_name"]} bash -c "{bash_cmd}"'
+    print(screen_cmd)
     Popen(screen_cmd, shell=True)  # nosec
 
 
@@ -53,12 +56,12 @@ def check(config: Dict) -> bool:
     return True
 
 
-def main_loop(bot_config: Dict):
+def main_loop(service_config: Dict):
     do_log("Started monitoring")
     while True:
-        bot_active = check(bot_config)
-        if not bot_active:
-            launch(bot_config)
+        service_active = check(service_config)
+        if not service_active:
+            launch(service_config)
         sleep(1)
 
 
@@ -88,10 +91,10 @@ def main_init():
         exit()
 
     do_log("Initialized")
-    bot_active = check(config["bot_vars"])
-    do_log(f"Bot is {'active' if bot_active else 'inactive'}")
+    service_active = check(config["service_vars"])
+    do_log(f"Service is is {'active' if service_active else 'inactive'}")
 
-    main_loop(config["bot_vars"])
+    main_loop(config["service_vars"])
 
 
 if __name__ == "__main__":
