@@ -1,0 +1,12 @@
+{
+  "service_vars": {
+    "directory": "$HOME/logsrv",
+    "launch_command": "sh run_server.sh",
+    "process_name": "logsrv-main"
+  },
+  "watchdog_vars": {
+    "directory": "$HOME/logsrv",
+    "launch_command": "poetry run python watchdog.py --config watchdog_config.json",
+    "process_name": "watchdog-logsrv"
+  }
+}
