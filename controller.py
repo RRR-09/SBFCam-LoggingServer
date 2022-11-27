@@ -1,4 +1,5 @@
 import json
+import traceback
 import uuid
 from typing import List
 
@@ -95,7 +96,8 @@ async def handle_data(data: List):
     try:
         formatted_data = await format_data(data)
     except Exception as e:
-        print(f"Could not format data:\n{e}\n{data}")
+        # TODO: Better error logging
+        print(f"Could not format data:\n{e}\n{data}\n{traceback.format_exc()}")
         return
 
     print(json.loads(formatted_data.json(), indent=2))
