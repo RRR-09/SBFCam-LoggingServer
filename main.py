@@ -53,7 +53,7 @@ async def post_player_data(
     elif content_type == "application/json":
         try:
             data_json = await request.json()
-        except JSONDecodeError:
+        except (JSONDecodeError, TypeError):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Failed to decode JSON body.",
