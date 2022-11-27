@@ -36,8 +36,7 @@ async def format_data(data: List) -> BufferedData:
         assert isinstance(timepoint, list)
 
         formatted_temporal_data = []
-        for _ in range(len(temporal_data)):
-            player_data = temporal_data.pop(0)
+        for player_data in temporal_data:
             assert len(player_data) == 13
 
             player_id = player_data[0]
