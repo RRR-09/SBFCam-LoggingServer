@@ -1,7 +1,7 @@
-from asyncio import create_task
 from json import JSONDecodeError
 from os import getenv
 from queue import SimpleQueue
+from threading import Thread
 
 from controller import data_processor_loop, handle_data
 from dotenv import load_dotenv
@@ -22,10 +22,9 @@ async def startup_event():
     check_dotenv()
     app.state.auth_key = getenv("AUTH_KEY")
     app.state.insertion_queue = SimpleQueue()
-    # Need to store reference to asyncio task or it gets GC'd
-    app.state.data_processor = create_task(
-        data_processor_loop(app.state.insertion_queue)
-    )
+    Thread(
+        target=data_processor_loop, args=(app.state.insertion_queue), daemon=True
+    ).start()
 
 
 @app.get("/")
