@@ -21,7 +21,7 @@ async def startup_event():
     load_dotenv(".env", verbose=True)
     check_dotenv()
     app.state.auth_key = getenv("AUTH_KEY")
-    app.state.insertion_queue = SimpleQueue(maxsize=99)
+    app.state.insertion_queue = SimpleQueue()
     # Need to store reference to asyncio task or it gets GC'd
     app.state.data_processor = create_task(
         data_processor_loop(app.state.insertion_queue)
