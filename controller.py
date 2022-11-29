@@ -1,6 +1,7 @@
 import json
 import traceback
-from typing import List
+from queue import Empty, SimpleQueue
+from typing import List, cast
 
 from models import (
     BUFFERED_DATA_REQUEST_KEYS_LEN,
@@ -13,8 +14,24 @@ from models import (
     TemporalDataRequest,
 )
 
+MOVEMENT_CACHE = {}
 
-async def format_data(data: List) -> BufferedDataRequest:
+
+async def data_processor_loop(insertion_queue: SimpleQueue):
+    """
+    A loop run at start that handles processing of validated entries
+    """
+    while True:
+        try:
+            item = cast(BufferedDataRequest, insertion_queue.get())
+        except Empty:
+            # Keep trying if we have an empty queue
+            continue
+
+        print(json.dumps(json.loads(item.json()), indent=2))
+
+
+async def validate_data(data: List) -> BufferedDataRequest:
     """
     Converts positional list-based data to an easier-to-use dict.
 
@@ -72,12 +89,12 @@ async def format_data(data: List) -> BufferedDataRequest:
     )
 
 
-async def handle_data(data: List):
+async def handle_data(insertion_queue: SimpleQueue, data: List):
     try:
-        formatted_data = await format_data(data)
+        validated_data = await validate_data(data)
     except Exception as e:
         # TODO: Better error logging
         print(f"Could not format data:\n{e}\n{data}\n{traceback.format_exc()}")
         return
 
-    print(json.dumps(json.loads(formatted_data.json()), indent=2))
+    insertion_queue.put(validated_data)
