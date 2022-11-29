@@ -23,7 +23,7 @@ async def startup_event():
     app.state.auth_key = getenv("AUTH_KEY")
     app.state.insertion_queue = SimpleQueue()
     Thread(
-        target=data_processor_loop, args=(app.state.insertion_queue), daemon=True
+        target=data_processor_loop, args=[app.state.insertion_queue], daemon=True
     ).start()
 
 
