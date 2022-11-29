@@ -17,7 +17,7 @@ from models import (
 MOVEMENT_CACHE = {}
 
 
-async def data_processor_loop(insertion_queue: SimpleQueue):
+def data_processor_loop(insertion_queue: SimpleQueue):
     """
     A loop run at start that handles processing of validated entries
     """
