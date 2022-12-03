@@ -42,7 +42,7 @@ def upgrade() -> None:
 
     op.create_foreign_key(
         None,
-        "positionals",
+        "positions",
         "users",
         ["user_id"],
         ["user_id"],
@@ -51,7 +51,7 @@ def upgrade() -> None:
 
     op.create_foreign_key(
         None,
-        "positionals",
+        "positions",
         "characters",
         ["character_id"],
         ["character_id"],
@@ -60,8 +60,8 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.drop_constraint("fk_characters_positionals", "positions")
-    op.drop_constraint("fk_users_positionals", "positions")
+    op.drop_constraint("fk_characters_positions", "positions")
+    op.drop_constraint("fk_users_positions", "positions")
     op.drop_table("positions")
     op.alter_column(
         "characters", "character_id", new_column_name="id", existing_type=sa.Integer
