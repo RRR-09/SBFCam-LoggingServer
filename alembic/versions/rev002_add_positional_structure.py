@@ -60,9 +60,9 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.drop_constraint("fk_characters_positions", "positions", type_="foreignkey")
-    op.drop_constraint("fk_users_positions", "positions", type_="foreignkey")
-    op.drop_table("positions")
     op.alter_column(
         "characters", "character_id", new_column_name="id", existing_type=sa.Integer
     )
+    op.drop_constraint("fk_characters_positions", "positions", type_="foreignkey")
+    op.drop_constraint("fk_users_positions", "positions", type_="foreignkey")
+    op.drop_table("positions")
