@@ -27,8 +27,8 @@ class PlayerDataRequest(BaseModel):
     velocity_x: float
     velocity_y: float
     velocity_z: float
-    scaleType: str
-    characterType: str
+    scale_type: str
+    character_type: str
 
 
 class TemporalDataRequest(BaseModel):
