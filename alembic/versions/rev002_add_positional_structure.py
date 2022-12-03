@@ -16,7 +16,9 @@ depends_on = None
 
 
 def upgrade() -> None:
-    op.alter_column("characters", "id", new_column_name="character_id")
+    op.alter_column(
+        "characters", "id", new_column_name="character_id", existing_type=sa.Integer
+    )
 
     op.create_table(
         "positions",
@@ -61,4 +63,6 @@ def downgrade() -> None:
     op.drop_constraint("fk_characters_positionals", "positions")
     op.drop_constraint("fk_users_positionals", "positions")
     op.drop_table("positions")
-    op.alter_column("characters", "character_id", new_column_name="id")
+    op.alter_column(
+        "characters", "character_id", new_column_name="id", existing_type=sa.Integer
+    )
